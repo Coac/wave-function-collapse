@@ -2,12 +2,21 @@ import numpy as np
 
 from display import plot_patterns, plot_sample
 
+"""
+Implementation of WaveFunctionCollapse
+Following the "WaveFunctionCollapse is Constraint Solving in the Wild" terminology
+"""
+
 
 def inverse_offset(offset):
     return -offset[0], -offset[1]
 
 
 class Propagator:
+    """
+    Propagator that computes and stores the legal patterns relative to another
+    """
+
     def __init__(self, patterns):
         self.patterns = patterns
 
@@ -46,7 +55,21 @@ class Propagator:
         return self.patterns
 
 
+class Pattern:
+    """
+    Pattern is a configuration of tiles from the input image.
+    """
+
+    def __init__(self):
+        self.index = 0
+        pass
+
+
 class Cell:
+    """
+    Cell is a pixel or tile (in 2d) that stores the possible patterns
+    """
+
     def __init__(self, num_pattern):
         self.num_pattern = num_pattern
         self.allowed_pattern = {}
@@ -54,13 +77,17 @@ class Cell:
             self.allowed_pattern[i] = True
 
     def entropy(self):
-        doable_pattern = 0
+        allowed_count = 0
         for i in range(self.num_pattern):
-            doable_pattern += self.allowed_pattern[i]
-        return doable_pattern
+            allowed_count += self.allowed_pattern[i]
+        return allowed_count
 
 
 class WaveFunctionCollapse:
+    """
+    WaveFunctionCollapse encapsulates the wfc algorithm
+    """
+
     def __init__(self):
         self.patterns = []
         self.propagator = None

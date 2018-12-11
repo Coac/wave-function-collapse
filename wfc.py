@@ -26,7 +26,7 @@ class Propagator:
             self.legal_patterns(self.patterns[0], offset)
 
     def legal_patterns(self, pattern, offset):
-        legal = []
+        legal_patt = []
 
         shape = pattern.shape
 
@@ -46,11 +46,11 @@ class Propagator:
                         break
 
             if ok_constraint:
-                legal.append(candidate_pattern)
+                legal_patt.append(candidate_pattern)
 
-        legal.append(pattern)
-
-        plot_patterns(legal, offset)
+        # Add last pattern to plot to check
+        legal_patt.append(pattern)
+        plot_patterns(legal_patt, offset)
 
         return self.patterns
 

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib import colors
 
 
 def plot_patterns(patterns, title=''):
@@ -10,7 +11,8 @@ def plot_patterns(patterns, title=''):
         if i > len(patterns):
             break
         fig.add_subplot(rows, columns, i)
-        plt.imshow(patterns[i - 1], cmap='seismic', interpolation='none', vmin=0, vmax=3)
+        cmap = colors.ListedColormap(['white', 'red', 'black'])
+        plt.imshow(patterns[i - 1], cmap=cmap, interpolation='none', vmin=0, vmax=3)
     plt.show()
 
 
@@ -23,11 +25,13 @@ def plot_pattern_offsets(pattern, offsets):
         if i > len(offsets):
             break
         fig.add_subplot(rows, columns, i)
-        plt.imshow(offsets[i - 1], cmap='seismic', interpolation='none', vmin=0, vmax=3)
+        cmap = colors.ListedColormap(['white', 'red', 'black'])
+        plt.imshow(offsets[i - 1], cmap=cmap, interpolation='none', vmin=0, vmax=3)
     plt.show()
 
 
 def plot_sample(sample):
-    im = plt.imshow(sample, cmap='seismic', interpolation='none', vmin=0, vmax=3)
+    cmap = colors.ListedColormap(['white', 'red', 'black'])
+    im = plt.imshow(sample, cmap=cmap, interpolation='none', vmin=0, vmax=3)
     plt.colorbar(im)
     plt.show()

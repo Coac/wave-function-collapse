@@ -3,6 +3,10 @@ import numpy as np
 from display import plot_patterns, plot_sample
 
 
+def inverse_offset(offset):
+    return -offset[0], -offset[1]
+
+
 class Propagator:
     def __init__(self, patterns):
         self.patterns = patterns
@@ -42,19 +46,27 @@ class Propagator:
         return self.patterns
 
 
+class Cell:
+    def __init__(self, num_pattern):
+        self.num_pattern = num_pattern
+        self.allowed_pattern = {}
+        for i in range(num_pattern):
+            self.allowed_pattern[i] = True
+
+    def entropy(self):
+        doable_pattern = 0
+        for i in range(self.num_pattern):
+            doable_pattern += self.allowed_pattern[i]
+        return doable_pattern
+
+
 class WaveFunctionCollapse:
     def __init__(self):
         self.patterns = []
+        self.propagator = None
+        self.N = 10
 
     def run(self):
-        self.patterns_from_sample()
-        self.build_propagator()
-        for _ in range(100):
-            self.observe()
-            self.propagate()
-        self.output_observations()
-
-    def patterns_from_sample(self):
         shape = (4, 4)
         sample = np.zeros(shape)
         sample[2, 2] = 1
@@ -67,6 +79,15 @@ class WaveFunctionCollapse:
         sample[3, 3] = 2
         sample[3, 2] = 2
 
+        self.patterns_from_sample(sample, shape)
+        self._init_board()
+        self.build_propagator()
+        for _ in range(100):
+            self.observe()
+            self.propagate()
+        self.output_observations()
+
+    def patterns_from_sample(self, sample, shape):
         plot_sample(sample)
 
         self.patterns = []
@@ -86,17 +107,27 @@ class WaveFunctionCollapse:
         plot_patterns(self.patterns)
 
     def build_propagator(self):
-        Propagator(self.patterns)
-        pass
+        self.propagator = Propagator(self.patterns)
 
     def observe(self):
-        pass
+        return self._find_lowest_entropy()
 
     def propagate(self):
         pass
 
     def output_observations(self):
         pass
+
+    def _find_lowest_entropy(self):
+        return self.board[0]
+
+    def _init_board(self):
+        num_pattern = len(self.patterns)
+
+        self.board = [[None for _ in range(self.N)] for _ in range(self.N)]
+        for i in range(self.N):
+            for j in range(self.N):
+                self.board[i][j] = Cell(num_pattern)
 
 
 if __name__ == '__main__':

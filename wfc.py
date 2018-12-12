@@ -31,17 +31,18 @@ class Propagator:
         shape = pattern.shape
 
         # area to compare
-        start_x = 0 + (offset[0] if offset[0] > 0 else 0)
-        start_y = 0 + (offset[1] if offset[1] > 0 else 0)
+        start_x = max(offset[0], 0)
+        start_y = max(offset[1], 0)
 
-        end_x = shape[0] + (offset[0] if offset[0] < 0 else 0)
-        end_y = shape[1] + (offset[1] if offset[1] < 0 else 0)
+        end_x = min(shape[0] + offset[0], shape[0])
+        end_y = min(shape[1] + offset[1], shape[1])
 
         for candidate_pattern in self.patterns:
             ok_constraint = True
+
             for x in range(start_x, end_x):
                 for y in range(start_y, end_y):
-                    if candidate_pattern[x + offset[0] * -1, y + offset[1] * -1] != pattern[x, y]:
+                    if candidate_pattern[y - offset[1], x - offset[0]] != pattern[y, x]:
                         ok_constraint = False
                         break
 
@@ -62,7 +63,30 @@ class Pattern:
 
     def __init__(self):
         self.index = 0
+        self.data = data
         pass
+
+    @staticmethod
+    def from_sample(sample):
+        plot_sample(sample)
+
+        shape = sample.shape
+        patterns = []
+        pattern_size = (2, 2)
+        for x in range(0, shape[0] - pattern_size[0] + 1):
+            for y in range(0, shape[1] - pattern_size[1] + 1):
+                x_range = range(x, pattern_size[0] + x)
+                y_range = range(y, pattern_size[1] + y)
+
+                pattern = sample[np.ix_(x_range, y_range)]
+                patterns.append(pattern)
+
+                # TODO Rotate
+
+                # TODO Reflect
+
+        plot_patterns(patterns)
+        return patterns
 
 
 class Cell:
@@ -106,32 +130,13 @@ class WaveFunctionCollapse:
         sample[3, 3] = 2
         sample[3, 2] = 2
 
-        self.patterns_from_sample(sample, shape)
+        self.patterns = Pattern.from_sample(sample)
         self._init_board()
         self.build_propagator()
         for _ in range(100):
             self.observe()
             self.propagate()
         self.output_observations()
-
-    def patterns_from_sample(self, sample, shape):
-        plot_sample(sample)
-
-        self.patterns = []
-        pattern_size = (2, 2)
-        for x in range(0, shape[0] - pattern_size[0] + 1):
-            for y in range(0, shape[1] - pattern_size[1] + 1):
-                x_range = range(x, pattern_size[0] + x)
-                y_range = range(y, pattern_size[1] + y)
-
-                pattern = sample[np.ix_(x_range, y_range)]
-                self.patterns.append(pattern)
-
-                # TODO Rotate
-
-                # TODO Reflect
-
-        plot_patterns(self.patterns)
 
     def build_propagator(self):
         self.propagator = Propagator(self.patterns)

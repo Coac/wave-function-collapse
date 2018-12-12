@@ -12,7 +12,7 @@ def plot_patterns(patterns, title=''):
             break
         fig.add_subplot(rows, columns, i)
         cmap = colors.ListedColormap(['white', 'red', 'black'])
-        plt.imshow(patterns[i - 1], cmap=cmap, interpolation='none', vmin=0, vmax=3)
+        plt.imshow(patterns[i - 1].data, cmap=cmap, interpolation='none', vmin=0, vmax=3)
     plt.show()
 
 

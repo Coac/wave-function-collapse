@@ -11,7 +11,6 @@ class Pattern:
     def __init__(self, data):
         self.index = 0
         self.data = np.array(data)
-        pass
 
     def get(self, x, y):
         return self.data[y, x]

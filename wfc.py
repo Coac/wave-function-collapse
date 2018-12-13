@@ -1,6 +1,6 @@
 import numpy as np
 
-from cell import Cell
+from board import Board
 from pattern import Pattern
 from propagator import Propagator
 
@@ -18,7 +18,7 @@ class WaveFunctionCollapse:
     def __init__(self):
         self.patterns = []
         self.propagator = None
-        self.N = 10
+        self.board = None
 
     def run(self):
         shape = (4, 4)
@@ -45,7 +45,12 @@ class WaveFunctionCollapse:
         self.propagator = Propagator(self.patterns)
 
     def observe(self):
-        return self._find_lowest_entropy()
+        cell = self.board.find_lowest_entropy()
+
+        # TODO check for contradiction
+        # TODO check for end
+
+        cell.choose_rnd_pattern()
 
     def propagate(self):
         pass
@@ -53,16 +58,9 @@ class WaveFunctionCollapse:
     def output_observations(self):
         pass
 
-    def _find_lowest_entropy(self):
-        return self.board[0]
-
     def _init_board(self):
         num_pattern = len(self.patterns)
-
-        self.board = [[None for _ in range(self.N)] for _ in range(self.N)]
-        for i in range(self.N):
-            for j in range(self.N):
-                self.board[i][j] = Cell(num_pattern)
+        self.board = Board(10, num_pattern)
 
 
 if __name__ == '__main__':

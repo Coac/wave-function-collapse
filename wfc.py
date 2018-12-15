@@ -36,7 +36,8 @@ class WaveFunctionCollapse:
         self.patterns = Pattern.from_sample(sample)
         self._init_board()
         self.build_propagator()
-        for _ in range(100):
+        for _ in range(2):
+            self.board.print_allowed_pattern_count()
             cell = self.observe()
             self.propagate(cell)
         self.output_observations()

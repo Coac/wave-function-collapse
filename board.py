@@ -40,3 +40,11 @@ class Board:
         im = plt.imshow(to_show, cmap=cmap, interpolation='none', vmin=0, vmax=4)
         plt.colorbar(im)
         plt.show()
+
+    def print_allowed_pattern_count(self):
+        to_print = ''
+        for x in range(self.size):
+            for y in range(self.size):
+                to_print += str(len(self.get(x, y).allowed_patterns)) + ' '
+            to_print += '\n'
+        print(to_print)

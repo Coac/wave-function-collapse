@@ -1,3 +1,6 @@
+from pattern import Pattern
+
+
 class Propagator:
     """
     Propagator that computes and stores the legal patterns relative to another
@@ -29,6 +32,13 @@ class Propagator:
         while len(to_update) > 0:
             cell = to_update.pop(0)
             for neighbour, offset in cell.get_neighbors():
-                for pattern_index in enumerate(cell.allowed_patterns):
-                    pass
-                    # compare pattern_index vs neighbour.pattern
+                for pattern_index in cell.allowed_patterns:
+                    pattern = Pattern.index_to_pattern[pattern_index]
+                    for neighbour_pattern_index in neighbour.allowed_patterns:
+                        neighbour_pattern = Pattern.index_to_pattern[neighbour_pattern_index]
+
+                        if not pattern.is_compatible(neighbour_pattern, offset):
+                            if pattern_index in cell.allowed_patterns:
+                                cell.allowed_patterns.remove(pattern_index)
+                            if neighbour not in to_update:
+                                to_update.append(neighbour)

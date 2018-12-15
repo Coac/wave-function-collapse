@@ -30,15 +30,20 @@ class Propagator:
         while len(to_update) > 0:
             cell = to_update.pop(0)
             for neighbour, offset in cell.get_neighbors():
-                for neighbour_pattern_index in neighbour.allowed_patterns:
-                    neighbour_pattern = Pattern.index_to_pattern[neighbour_pattern_index]
-                    for pattern_index in cell.allowed_patterns:
-                        pattern = Pattern.index_to_pattern[pattern_index]
+                for pattern_index in cell.allowed_patterns:
+                    pattern = Pattern.index_to_pattern[pattern_index]
+                    pattern_still_compatible = False
+                    for neighbour_pattern_index in neighbour.allowed_patterns:
+                        neighbour_pattern = Pattern.index_to_pattern[neighbour_pattern_index]
 
-                        if cell.is_stable():
-                            continue
+                        if pattern.is_compatible(neighbour_pattern, offset):
+                            pattern_still_compatible = True
+                            break
 
-                        if not pattern.is_compatible(neighbour_pattern, offset):
-                            cell.allowed_patterns.remove(pattern_index)
-                            if neighbour not in to_update:
-                                to_update.append(neighbour)
+                    if cell.is_stable():
+                        continue
+
+                    if not pattern_still_compatible:
+                        cell.allowed_patterns.remove(pattern_index)
+                        if neighbour not in to_update:
+                            to_update.append(neighbour)

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib import colors
 
 from cell import Cell
@@ -15,15 +16,24 @@ class Board:
 
     def find_lowest_entropy(self):
         min_entropy = 999999
-        lowest_entropy_cell = None
+        lowest_entropy_cells = []
         for row in self.board:
             for cell in row:
-                entropy = cell.entropy()
-                if entropy < min_entropy and not cell.is_stable():
-                    min_entropy = min_entropy
-                    lowest_entropy_cell = cell
+                if cell.is_stable():
+                    continue
 
-        return lowest_entropy_cell
+                entropy = cell.entropy()
+
+                if entropy == min_entropy:
+                    lowest_entropy_cells.append(cell)
+                elif entropy < min_entropy:
+                    min_entropy = entropy
+                    lowest_entropy_cells = [cell]
+
+        if len(lowest_entropy_cells) == 0:
+            return None
+        cell = lowest_entropy_cells[np.random.randint(len(lowest_entropy_cells))]
+        return cell
 
     def get(self, x, y):
         return self.board[y][x]

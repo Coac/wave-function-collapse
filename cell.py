@@ -1,14 +1,20 @@
 import numpy as np
 
+from pattern import Pattern
+
 
 class Cell:
     """
     Cell is a pixel or tile (in 2d) that stores the possible patterns
     """
 
-    def __init__(self, num_pattern):
+    def __init__(self, num_pattern, position, board):
         self.num_pattern = num_pattern
         self.allowed_patterns = [i for i in range(self.num_pattern)]
+
+        self.position = position
+        self.board = board
+        self.offsets = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
 
     def entropy(self):
         return len(self.allowed_patterns)
@@ -22,9 +28,14 @@ class Cell:
 
     def get_value(self):
         if self.is_stable():
-            return self.allowed_patterns[0]
+            return Pattern.index_to_pattern[self.allowed_patterns[0]].get(0, 0)
         return 4
 
     def get_neighbors(self):
-        return []
-        # [(cell, offset)]
+        neighbors = []
+        for offset in self.offsets:
+            x = self.position[0] + offset[0]
+            y = self.position[1] + offset[1]
+            if 0 <= x < self.board.size and 0 <= y < self.board.size:
+                neighbors.append((self.board.get(x, y), offset))
+        return neighbors

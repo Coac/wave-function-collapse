@@ -16,18 +16,19 @@ class Propagator:
         legal_patt = []
         for candidate_pattern in self.patterns:
             if pattern.is_compatible(candidate_pattern, offset):
-                legal_patt.append(candidate_pattern)
+                legal_patt.append(candidate_pattern.index)
 
         # Add last pattern to plot to check
         # legal_patt.append(pattern)
         # plot_patterns(legal_patt, offset)
 
-        return self.patterns
+        return legal_patt
 
     def propagate(self, cell):
         to_update = [neighbour for neighbour, _ in cell.get_neighbors()]
         while len(to_update) > 0:
+            cell = to_update.pop(0)
             for neighbour, offset in cell.get_neighbors():
-                for pattern_index in enumerate(cell.allowed_pattern):
+                for pattern_index in enumerate(cell.allowed_patterns):
                     pass
                     # compare pattern_index vs neighbour.pattern

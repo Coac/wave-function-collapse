@@ -7,9 +7,10 @@ class Pattern:
     """
     Pattern is a configuration of tiles from the input image.
     """
+    index_to_pattern = {}
 
-    def __init__(self, data):
-        self.index = 0
+    def __init__(self, data, index):
+        self.index = index
         self.data = np.array(data)
 
     def get(self, x, y):
@@ -44,13 +45,18 @@ class Pattern:
         shape = sample.shape
         patterns = []
         pattern_size = (2, 2)
+        pattern_index = 0
         for x in range(0, shape[0] - pattern_size[0] + 1):
             for y in range(0, shape[1] - pattern_size[1] + 1):
                 x_range = range(x, pattern_size[0] + x)
                 y_range = range(y, pattern_size[1] + y)
 
-                pattern = sample[np.ix_(x_range, y_range)]
-                patterns.append(Pattern(pattern))
+                pattern_data = sample[np.ix_(x_range, y_range)]
+
+                pattern = Pattern(pattern_data, pattern_index)
+                patterns.append(pattern)
+                Pattern.index_to_pattern[pattern_index] = pattern
+                pattern_index += 1
 
                 # TODO Rotate
 

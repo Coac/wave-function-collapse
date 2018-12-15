@@ -8,26 +8,23 @@ class Cell:
 
     def __init__(self, num_pattern):
         self.num_pattern = num_pattern
-        self.allowed_pattern = {}
-        for i in range(self.num_pattern):
-            self.allowed_pattern[i] = True
+        self.allowed_patterns = [i for i in range(self.num_pattern)]
 
     def entropy(self):
-        allowed_count = 0
-        for i in range(self.num_pattern):
-            allowed_count += self.allowed_pattern[i]
-        return allowed_count
+        return len(self.allowed_patterns)
 
     def choose_rnd_pattern(self):
-        allowed_indexes = []
-        for i, is_allowed in enumerate(self.allowed_pattern):
-            if not is_allowed:
-                continue
-            allowed_indexes.append(i)
+        chosen_index = np.random.randint(len(self.allowed_patterns))
+        self.allowed_patterns = [self.allowed_patterns[chosen_index]]
 
-        chosen_index = np.random.randint(len(allowed_indexes))
+    def is_stable(self):
+        return len(self.allowed_patterns) == 1
 
-        for i in range(self.num_pattern):
-            if i == chosen_index:
-                continue
-            self.allowed_pattern[i] = False
+    def get_value(self):
+        if self.is_stable():
+            return self.allowed_patterns[0]
+        return 4
+
+    def get_neighbors(self):
+        return []
+        # [(cell, offset)]

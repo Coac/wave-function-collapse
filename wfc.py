@@ -37,8 +37,8 @@ class WaveFunctionCollapse:
         self._init_board()
         self.build_propagator()
         for _ in range(100):
-            self.observe()
-            self.propagate()
+            cell = self.observe()
+            self.propagate(cell)
         self.output_observations()
 
     def build_propagator(self):
@@ -52,11 +52,13 @@ class WaveFunctionCollapse:
 
         cell.choose_rnd_pattern()
 
-    def propagate(self):
-        pass
+        return cell
+
+    def propagate(self, cell):
+        self.propagator.propagate(cell)
 
     def output_observations(self):
-        pass
+        self.board.show()
 
     def _init_board(self):
         num_pattern = len(self.patterns)

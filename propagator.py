@@ -23,3 +23,11 @@ class Propagator:
         # plot_patterns(legal_patt, offset)
 
         return self.patterns
+
+    def propagate(self, cell):
+        to_update = [neighbour for neighbour, _ in cell.get_neighbors()]
+        while len(to_update) > 0:
+            for neighbour, offset in cell.get_neighbors():
+                for pattern_index in enumerate(cell.allowed_pattern):
+                    pass
+                    # compare pattern_index vs neighbour.pattern

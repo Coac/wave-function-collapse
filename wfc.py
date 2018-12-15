@@ -1,6 +1,4 @@
-import numpy as np
-
-from board import Board
+from grid import Grid
 from pattern import Pattern
 from propagator import Propagator
 
@@ -15,29 +13,16 @@ class WaveFunctionCollapse:
     WaveFunctionCollapse encapsulates the wfc algorithm
     """
 
-    def __init__(self):
-        self.patterns = []
+    def __init__(self, grid_size, sample):
+        self.patterns = Pattern.from_sample(sample)
+        self.grid = self._create_grid(grid_size)
+
         self.propagator = None
-        self.board = None
 
     def run(self):
-        shape = (4, 4)
-        sample = np.zeros(shape)
-        sample[2, 2] = 1
-        sample[1, 1] = 2
-        sample[2, 1] = 2
-        sample[3, 1] = 2
-        sample[1, 2] = 2
-        sample[1, 3] = 2
-        sample[2, 3] = 2
-        sample[3, 3] = 2
-        sample[3, 2] = 2
-
-        self.patterns = Pattern.from_sample(sample)
-        self._init_board()
         self.build_propagator()
         while True:
-            self.board.print_allowed_pattern_count()
+            self.grid.print_allowed_pattern_count()
             cell = self.observe()
             if cell is None:
                 break
@@ -48,9 +33,9 @@ class WaveFunctionCollapse:
         self.propagator = Propagator(self.patterns)
 
     def observe(self):
-        if self.board.check_contradiction():
+        if self.grid.check_contradiction():
             return None
-        cell = self.board.find_lowest_entropy()
+        cell = self.grid.find_lowest_entropy()
 
         if cell is None:
             return None
@@ -63,13 +48,8 @@ class WaveFunctionCollapse:
         self.propagator.propagate(cell)
 
     def output_observations(self):
-        self.board.show()
+        self.grid.show()
 
-    def _init_board(self):
+    def _create_grid(self, grid_size):
         num_pattern = len(self.patterns)
-        self.board = Board(10, num_pattern)
-
-
-if __name__ == '__main__':
-    wfc = WaveFunctionCollapse()
-    wfc.run()
+        return Grid(grid_size, num_pattern)

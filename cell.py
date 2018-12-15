@@ -8,12 +8,12 @@ class Cell:
     Cell is a pixel or tile (in 2d) that stores the possible patterns
     """
 
-    def __init__(self, num_pattern, position, board):
+    def __init__(self, num_pattern, position, grid):
         self.num_pattern = num_pattern
         self.allowed_patterns = [i for i in range(self.num_pattern)]
 
         self.position = position
-        self.board = board
+        self.grid = grid
         self.offsets = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
 
     def entropy(self):
@@ -36,6 +36,6 @@ class Cell:
         for offset in self.offsets:
             x = self.position[0] + offset[0]
             y = self.position[1] + offset[1]
-            if 0 <= x < self.board.size and 0 <= y < self.board.size:
-                neighbors.append((self.board.get(x, y), offset))
+            if 0 <= x < self.grid.size and 0 <= y < self.grid.size:
+                neighbors.append((self.grid.get(x, y), offset))
         return neighbors

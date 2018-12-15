@@ -5,19 +5,19 @@ from matplotlib import colors
 from cell import Cell
 
 
-class Board:
+class Grid:
     """
-    Board is made of Cells
+    Grid is made of Cells
     """
 
     def __init__(self, size, num_pattern):
         self.size = size
-        self.board = [[Cell(num_pattern, (x, y), self) for x in range(self.size)] for y in range(self.size)]
+        self.grid = [[Cell(num_pattern, (x, y), self) for x in range(self.size)] for y in range(self.size)]
 
     def find_lowest_entropy(self):
         min_entropy = 999999
         lowest_entropy_cells = []
-        for row in self.board:
+        for row in self.grid:
             for cell in row:
                 if cell.is_stable():
                     continue
@@ -36,11 +36,11 @@ class Board:
         return cell
 
     def get(self, x, y):
-        return self.board[y][x]
+        return self.grid[y][x]
 
     def show(self):
         to_show = []
-        for row in self.board:
+        for row in self.grid:
             to_show.append([cell.get_value() for cell in row])
 
         cmap = colors.ListedColormap(['white', 'red', 'black', 'blue'])
@@ -49,7 +49,7 @@ class Board:
         plt.show()
 
     def check_contradiction(self):
-        for row in self.board:
+        for row in self.grid:
             for cell in row:
                 if len(cell.allowed_patterns) == 0:
                     return True

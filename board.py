@@ -48,10 +48,17 @@ class Board:
         plt.colorbar(im)
         plt.show()
 
+    def check_contradiction(self):
+        for row in self.board:
+            for cell in row:
+                if len(cell.allowed_patterns) == 0:
+                    return True
+        return False
+
     def print_allowed_pattern_count(self):
         to_print = ''
-        for x in range(self.size):
-            for y in range(self.size):
-                to_print += str(len(self.get(x, y).allowed_patterns)) + ' '
+        for y in range(self.size):
+            for x in range(self.size):
+                to_print += str(len(self.get(x, y).allowed_patterns)) + '\t'
             to_print += '\n'
         print(to_print)

@@ -40,10 +40,9 @@ class Propagator:
                             pattern_still_compatible = True
                             break
 
-                    if cell.is_stable():
-                        continue
-
                     if not pattern_still_compatible:
                         cell.allowed_patterns.remove(pattern_index)
-                        if neighbour not in to_update:
-                            to_update.append(neighbour)
+
+                        for neigh, _ in cell.get_neighbors():
+                            if neigh not in to_update:
+                                to_update.append(neigh)

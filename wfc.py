@@ -48,13 +48,12 @@ class WaveFunctionCollapse:
         self.propagator = Propagator(self.patterns)
 
     def observe(self):
+        if self.board.check_contradiction():
+            return None
         cell = self.board.find_lowest_entropy()
 
         if cell is None:
             return None
-
-        # TODO check for contradiction
-        # TODO check for end
 
         cell.choose_rnd_pattern()
 

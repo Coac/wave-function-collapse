@@ -53,14 +53,25 @@ class Pattern:
 
                 pattern_data = sample[np.ix_(x_range, y_range)]
 
-                pattern = Pattern(pattern_data, pattern_index)
-                patterns.append(pattern)
-                Pattern.index_to_pattern[pattern_index] = pattern
-                pattern_index += 1
+                datas = [pattern_data,
+                         np.rot90(pattern_data),
+                         np.rot90(pattern_data, 2),
+                         np.fliplr(pattern_data),
+                         np.flipud(pattern_data)]
 
-                # TODO Rotate
+                for data in datas:
+                    exist = False
+                    for p in patterns:
+                        if (p.data == data).all():
+                            exist = True
+                            break
+                    if exist:
+                        continue
 
-                # TODO Reflect
+                    pattern = Pattern(data, pattern_index)
+                    patterns.append(pattern)
+                    Pattern.index_to_pattern[pattern_index] = pattern
+                    pattern_index += 1
 
         plot_patterns(patterns)
         return patterns

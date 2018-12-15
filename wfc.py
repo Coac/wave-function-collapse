@@ -36,9 +36,11 @@ class WaveFunctionCollapse:
         self.patterns = Pattern.from_sample(sample)
         self._init_board()
         self.build_propagator()
-        for _ in range(2):
+        for _ in range(100):
             self.board.print_allowed_pattern_count()
             cell = self.observe()
+            if cell is None:
+                break
             self.propagate(cell)
         self.output_observations()
 
@@ -47,6 +49,9 @@ class WaveFunctionCollapse:
 
     def observe(self):
         cell = self.board.find_lowest_entropy()
+
+        if cell is None:
+            return None
 
         # TODO check for contradiction
         # TODO check for end

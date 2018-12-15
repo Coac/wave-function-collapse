@@ -29,9 +29,6 @@ class Board:
         return self.board[y][x]
 
     def show(self):
-        for x in range(self.size):
-            for y in range(self.size):
-                print(x, y, self.get(x, y).get_value())
         to_show = []
         for row in self.board:
             to_show.append([cell.get_value() for cell in row])

@@ -16,21 +16,25 @@ class WaveFunctionCollapse:
     def __init__(self, grid_size, sample):
         self.patterns = Pattern.from_sample(sample)
         self.grid = self._create_grid(grid_size)
-
-        self.propagator = None
+        self.propagator = Propagator(self.patterns)
 
     def run(self):
-        self.build_propagator()
-        while True:
-            self.grid.print_allowed_pattern_count()
-            cell = self.observe()
-            if cell is None:
-                break
-            self.propagate(cell)
+        done = False
+        while not done:
+            done = self.step()
+
         self.output_observations()
 
-    def build_propagator(self):
-        self.propagator = Propagator(self.patterns)
+    def step(self):
+        self.grid.print_allowed_pattern_count()
+        cell = self.observe()
+        if cell is None:
+            return True
+        self.propagate(cell)
+        return False
+
+    def get_image(self):
+        return self.grid.get_image()
 
     def observe(self):
         if self.grid.check_contradiction():

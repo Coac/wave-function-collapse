@@ -37,5 +37,5 @@ class Cell:
             x = self.position[0] + offset[0]
             y = self.position[1] + offset[1]
             if 0 <= x < self.grid.size and 0 <= y < self.grid.size:
-                neighbors.append((self.grid.get(x, y), offset))
+                neighbors.append((self.grid.get_cell(x, y), offset))
         return neighbors

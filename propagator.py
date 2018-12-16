@@ -15,6 +15,8 @@ class Propagator:
             for offset in self.offsets:
                 self.legal_patterns(pattern, offset)
 
+        # TODO store a precomputed compatibility list
+
     def legal_patterns(self, pattern, offset):
         legal_patt = []
         for candidate_pattern in self.patterns:

@@ -35,16 +35,18 @@ class Grid:
         cell = lowest_entropy_cells[np.random.randint(len(lowest_entropy_cells))]
         return cell
 
-    def get(self, x, y):
+    def get_cell(self, x, y):
         return self.grid[y][x]
 
-    def show(self):
-        to_show = []
+    def get_image(self):
+        image = []
         for row in self.grid:
-            to_show.append([cell.get_value() for cell in row])
+            image.append([cell.get_value() for cell in row])
+        return image
 
+    def show(self):
         cmap = colors.ListedColormap(['white', 'red', 'black', 'blue'])
-        im = plt.imshow(to_show, cmap=cmap, interpolation='none', vmin=0, vmax=4)
+        im = plt.imshow(self.get_image(), cmap=cmap, interpolation='none', vmin=0, vmax=4)
         plt.colorbar(im)
         plt.show()
 
@@ -59,6 +61,6 @@ class Grid:
         to_print = ''
         for y in range(self.size):
             for x in range(self.size):
-                to_print += str(len(self.get(x, y).allowed_patterns)) + '\t'
+                to_print += str(len(self.get_cell(x, y).allowed_patterns)) + '\t'
             to_print += '\n'
         print(to_print)

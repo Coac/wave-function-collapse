@@ -21,6 +21,12 @@ class Pattern:
         return self.data.shape
 
     def is_compatible(self, candidate_pattern, offset):
+        """
+        Check if pattern is compatible with a candidate pattern for a given offset
+        :param candidate_pattern:
+        :param offset:
+        :return: True if compatible
+        """
         assert (self.shape == candidate_pattern.shape)
 
         start_x = max(offset[0], 0)
@@ -40,6 +46,12 @@ class Pattern:
 
     @staticmethod
     def from_sample(sample):
+        """
+        Compute patterns from sample
+        :param sample:
+        :return: list of patterns
+        """
+        sample = Pattern.sample_img_to_indexes(sample)
         plot_sample(sample)
 
         shape = sample.shape
@@ -75,3 +87,25 @@ class Pattern:
 
         plot_patterns(patterns)
         return patterns
+
+    @staticmethod
+    def sample_img_to_indexes(sample):
+        """
+        Convert a rgb image to a 2D array with pixel index
+        :param sample:
+        :return: pixel index sample
+        """
+        colors_to_index = {}
+        sample_index = np.zeros(sample.shape[:2])
+        color_number = 0
+        for i in range(sample.shape[0]):
+            for j in range(sample.shape[1]):
+                color = tuple(sample[i, j])
+                if color not in colors_to_index:
+                    colors_to_index[color] = color_number
+                    color_number += 1
+
+                sample_index[i, j] = colors_to_index[color]
+
+        print('Unique color count = ', color_number)
+        return sample_index

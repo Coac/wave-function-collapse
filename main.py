@@ -1,6 +1,5 @@
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
-from matplotlib import colors
 
 from wfc import WaveFunctionCollapse
 
@@ -13,9 +12,8 @@ if __name__ == '__main__':
     # wfc.run()
 
     fig = plt.figure()
-    cmap = colors.ListedColormap(['white', 'red', 'black', 'grey'])
-    im = plt.imshow(wfc.get_image(), cmap=cmap, animated=True, interpolation='none', vmin=0, vmax=4)
-    plt.colorbar(im)
+
+    im = plt.imshow(wfc.get_image())
 
 
     def update_fig(*args):

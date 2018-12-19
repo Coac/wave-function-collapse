@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import colors
 
 from cell import Cell
+from pattern import Pattern
 
 
 class Grid:
@@ -42,12 +42,12 @@ class Grid:
         image = []
         for row in self.grid:
             image.append([cell.get_value() for cell in row])
+
+        image = Pattern.index_to_img(np.array(image))
         return image
 
     def show(self):
-        cmap = colors.ListedColormap(['white', 'red', 'black', 'blue'])
-        im = plt.imshow(self.get_image(), cmap=cmap, interpolation='none', vmin=0, vmax=4)
-        plt.colorbar(im)
+        plt.imshow(self.get_image())
         plt.show()
 
     def check_contradiction(self):

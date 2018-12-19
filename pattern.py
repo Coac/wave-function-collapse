@@ -1,6 +1,5 @@
+import matplotlib.pyplot as plt
 import numpy as np
-
-from display import plot_sample, plot_patterns
 
 
 class Pattern:
@@ -8,6 +7,8 @@ class Pattern:
     Pattern is a configuration of tiles from the input image.
     """
     index_to_pattern = {}
+    color_to_index = {}
+    index_to_color = {}
 
     def __init__(self, data, index):
         self.index = index
@@ -51,8 +52,10 @@ class Pattern:
         :param sample:
         :return: list of patterns
         """
+        plt.imshow(sample)
+        plt.show()
+
         sample = Pattern.sample_img_to_indexes(sample)
-        plot_sample(sample)
 
         shape = sample.shape
         patterns = []
@@ -85,7 +88,7 @@ class Pattern:
                     Pattern.index_to_pattern[pattern_index] = pattern
                     pattern_index += 1
 
-        plot_patterns(patterns)
+        Pattern.plot_patterns(patterns)
         return patterns
 
     @staticmethod
@@ -95,17 +98,48 @@ class Pattern:
         :param sample:
         :return: pixel index sample
         """
-        colors_to_index = {}
+        Pattern.color_to_index = {}
+        Pattern.index_to_color = {}
         sample_index = np.zeros(sample.shape[:2])
         color_number = 0
         for i in range(sample.shape[0]):
             for j in range(sample.shape[1]):
                 color = tuple(sample[i, j])
-                if color not in colors_to_index:
-                    colors_to_index[color] = color_number
+                if color not in Pattern.color_to_index:
+                    Pattern.color_to_index[color] = color_number
+                    Pattern.index_to_color[color_number] = color
                     color_number += 1
 
-                sample_index[i, j] = colors_to_index[color]
+                sample_index[i, j] = Pattern.color_to_index[color]
 
         print('Unique color count = ', color_number)
         return sample_index
+
+    @staticmethod
+    def index_to_img(sample):
+        image = np.zeros(sample.shape + (3,))
+        for i in range(sample.shape[0]):
+            for j in range(sample.shape[1]):
+                index = sample[i, j]
+                if index == -1:
+                    image[i, j] = [0.5, 0.5, 0.5]  # Grey
+                else:
+                    image[i, j] = Pattern.index_to_color[index]
+        return image
+
+    @staticmethod
+    def plot_patterns(patterns, title=''):
+        fig = plt.figure(figsize=(8, 8))
+        fig.suptitle(title, fontsize=16)
+        columns = 4
+        rows = 5
+        for i in range(1, columns * rows + 1):
+            if i > len(patterns):
+                break
+            fig.add_subplot(rows, columns, i)
+
+            image = Pattern.index_to_img(patterns[i - 1].data)
+
+            plt.imshow(image)
+
+        plt.show()

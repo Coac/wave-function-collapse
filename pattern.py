@@ -143,3 +143,7 @@ class Pattern:
             plt.imshow(image)
 
         plt.show()
+
+    @staticmethod
+    def from_index(pattern_index):
+        return Pattern.index_to_pattern[pattern_index]

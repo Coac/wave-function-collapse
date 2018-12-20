@@ -23,7 +23,7 @@ class Propagator:
             if pattern.is_compatible(candidate_pattern, offset):
                 legal_patt.append(candidate_pattern.index)
 
-        # plot_patterns([Pattern.index_to_pattern[pat] for pat in legal_patt], offset)
+        # plot_patterns([Pattern.pattern_from_index(pat) for pat in legal_patt], offset)
 
         return legal_patt
 
@@ -33,10 +33,10 @@ class Propagator:
             cell = to_update.pop(0)
             for neighbour, offset in cell.get_neighbors():
                 for pattern_index in cell.allowed_patterns:
-                    pattern = Pattern.index_to_pattern[pattern_index]
+                    pattern = Pattern.from_index(pattern_index)
                     pattern_still_compatible = False
                     for neighbour_pattern_index in neighbour.allowed_patterns:
-                        neighbour_pattern = Pattern.index_to_pattern[neighbour_pattern_index]
+                        neighbour_pattern = Pattern.from_index(neighbour_pattern_index)
 
                         if pattern.is_compatible(neighbour_pattern, offset):
                             pattern_still_compatible = True

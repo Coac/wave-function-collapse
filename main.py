@@ -6,7 +6,7 @@ from wfc import WaveFunctionCollapse
 if __name__ == '__main__':
 
     grid_size = 30
-    sample = plt.imread('samples/red_maze.png')
+    sample = plt.imread('samples/maze.png')
     wfc = WaveFunctionCollapse(grid_size, sample)
 
     # wfc.run()

@@ -61,32 +61,41 @@ class Pattern:
         patterns = []
         pattern_size = (2, 2)
         pattern_index = 0
-        for x in range(0, shape[0] - pattern_size[0] + 1):
-            for y in range(0, shape[1] - pattern_size[1] + 1):
-                x_range = range(x, pattern_size[0] + x)
-                y_range = range(y, pattern_size[1] + y)
 
-                pattern_data = sample[np.ix_(x_range, y_range)]
+        for index, _ in np.ndenumerate(sample):
+            # Checking if index is out of bounds
+            out = False
+            for i, d in enumerate(index):  # d is a dimension, e.g.: x, y, z
+                if d > shape[i] - pattern_size[i]:
+                    out = True
+                    break
+            if out:
+                continue
 
-                datas = [pattern_data,
-                         np.rot90(pattern_data),
-                         np.rot90(pattern_data, 2),
-                         np.fliplr(pattern_data),
-                         np.flipud(pattern_data)]
+            pattern_location = [range(d, pattern_size[i] + d) for i, d in enumerate(index)]
+            pattern_data = sample[np.ix_(*pattern_location)]
 
-                for data in datas:
-                    exist = False
-                    for p in patterns:
-                        if (p.data == data).all():
-                            exist = True
-                            break
-                    if exist:
-                        continue
+            datas = [pattern_data, np.fliplr(pattern_data)]
+            if len(index) > 1:
+                datas.append(np.flipud(pattern_data))
+                datas.append(np.rot90(pattern_data))
+                datas.append(np.rot90(pattern_data, 2))
 
-                    pattern = Pattern(data, pattern_index)
-                    patterns.append(pattern)
-                    Pattern.index_to_pattern[pattern_index] = pattern
-                    pattern_index += 1
+            # Checking existence
+            # TODO: more probability to multiple occurrences when observe phase
+            for data in datas:
+                exist = False
+                for p in patterns:
+                    if (p.data == data).all():
+                        exist = True
+                        break
+                if exist:
+                    continue
+
+                pattern = Pattern(data, pattern_index)
+                patterns.append(pattern)
+                Pattern.index_to_pattern[pattern_index] = pattern
+                pattern_index += 1
 
         Pattern.plot_patterns(patterns)
         return patterns

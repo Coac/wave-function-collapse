@@ -14,8 +14,9 @@ class Pattern:
         self.index = index
         self.data = np.array(data)
 
-    def get(self, x, y):
-        return self.data[y, x]
+    def get(self, index):
+        reversed_index = index[::-1]
+        return self.data[reversed_index]
 
     @property
     def shape(self):
@@ -30,18 +31,34 @@ class Pattern:
         """
         assert (self.shape == candidate_pattern.shape)
 
-        start_x = max(offset[0], 0)
-        start_y = max(offset[1], 0)
-
-        end_x = min(self.shape[0] + offset[0], self.shape[0])
-        end_y = min(self.shape[1] + offset[1], self.shape[1])
-
         ok_constraint = True
-        for x in range(start_x, end_x):
-            for y in range(start_y, end_y):
-                if candidate_pattern.get(x - offset[0], y - offset[1]) != self.get(x, y):
-                    ok_constraint = False
+        start = tuple(max(offset[i], 0) for i, _ in enumerate(offset))
+        end = tuple(min(self.shape[i] + offset[i], self.shape[i]) for i, _ in enumerate(offset))
+        for index in np.ndindex(end):  # index = (x, y, z...)
+            start_constraint = True
+            for i, d in enumerate(index):
+                if d < start[i]:
+                    start_constraint = False
                     break
+            if not start_constraint:
+                continue
+
+            if candidate_pattern.get(tuple(np.array(index) - np.array(offset))) != self.get(index):
+                ok_constraint = False
+                break
+
+        # Old code, only for 2D
+        # start_x = max(offset[0], 0)
+        # start_y = max(offset[1], 0)
+        #
+        # end_x = min(self.shape[0] + offset[0], self.shape[0])
+        # end_y = min(self.shape[1] + offset[1], self.shape[1])
+        # ok_constraint = True
+        # for x in range(start_x, end_x):
+        #     for y in range(start_y, end_y):
+        #         if candidate_pattern.get((x - offset[0], y - offset[1])) != self.get((x, y)):
+        #             ok_constraint = False
+        #             break
 
         return ok_constraint
 

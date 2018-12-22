@@ -29,7 +29,7 @@ class Cell:
     def get_value(self):
         if self.is_stable():
             pattern = Pattern.from_index(self.allowed_patterns[0])
-            return pattern.get(0, 0)
+            return pattern.get((0, 0))
         return -1
 
     def get_neighbors(self):

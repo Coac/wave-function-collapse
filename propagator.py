@@ -23,7 +23,7 @@ class Propagator:
             if pattern.is_compatible(candidate_pattern, offset):
                 legal_patt.append(candidate_pattern.index)
 
-        # plot_patterns([Pattern.pattern_from_index(pat) for pat in legal_patt], offset)
+        # Pattern.plot_patterns([Pattern.from_index(pat) for pat in legal_patt], offset)
 
         return legal_patt
 

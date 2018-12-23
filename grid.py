@@ -17,18 +17,17 @@ class Grid:
     def find_lowest_entropy(self):
         min_entropy = 999999
         lowest_entropy_cells = []
-        for row in self.grid:
-            for cell in row:
-                if cell.is_stable():
-                    continue
+        for cell in self.grid.flat:
+            if cell.is_stable():
+                continue
 
-                entropy = cell.entropy()
+            entropy = cell.entropy()
 
-                if entropy == min_entropy:
-                    lowest_entropy_cells.append(cell)
-                elif entropy < min_entropy:
-                    min_entropy = entropy
-                    lowest_entropy_cells = [cell]
+            if entropy == min_entropy:
+                lowest_entropy_cells.append(cell)
+            elif entropy < min_entropy:
+                min_entropy = entropy
+                lowest_entropy_cells = [cell]
 
         if len(lowest_entropy_cells) == 0:
             return None
@@ -44,11 +43,8 @@ class Grid:
         return self.grid[reversed_index]
 
     def get_image(self):
-        image = []
-        for row in self.grid:
-            image.append([cell.get_value() for cell in row])
-
-        image = Pattern.index_to_img(np.array(image))
+        image = np.vectorize(lambda c: c.get_value())(self.grid)
+        image = Pattern.index_to_img(image)
         return image
 
     def show(self):
@@ -56,10 +52,9 @@ class Grid:
         plt.show()
 
     def check_contradiction(self):
-        for row in self.grid:
-            for cell in row:
-                if len(cell.allowed_patterns) == 0:
-                    return True
+        for cell in self.grid.flat:
+            if len(cell.allowed_patterns) == 0:
+                return True
         return False
 
     def print_allowed_pattern_count(self):

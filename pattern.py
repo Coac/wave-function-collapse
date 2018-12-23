@@ -137,17 +137,16 @@ class Pattern:
         """
         Pattern.color_to_index = {}
         Pattern.index_to_color = {}
-        sample_index = np.zeros(sample.shape[:2])
+        sample_index = np.zeros(sample.shape[:-1])  # without last rgb dim
         color_number = 0
-        for i in range(sample.shape[0]):
-            for j in range(sample.shape[1]):
-                color = tuple(sample[i, j])
-                if color not in Pattern.color_to_index:
-                    Pattern.color_to_index[color] = color_number
-                    Pattern.index_to_color[color_number] = color
-                    color_number += 1
+        for index in np.ndindex(sample.shape[:-1]):
+            color = tuple(sample[index])
+            if color not in Pattern.color_to_index:
+                Pattern.color_to_index[color] = color_number
+                Pattern.index_to_color[color_number] = color
+                color_number += 1
 
-                sample_index[i, j] = Pattern.color_to_index[color]
+            sample_index[index] = Pattern.color_to_index[color]
 
         print('Unique color count = ', color_number)
         return sample_index
@@ -155,13 +154,12 @@ class Pattern:
     @staticmethod
     def index_to_img(sample):
         image = np.zeros(sample.shape + (3,))
-        for i in range(sample.shape[0]):
-            for j in range(sample.shape[1]):
-                index = sample[i, j]
-                if index == -1:
-                    image[i, j] = [0.5, 0.5, 0.5]  # Grey
-                else:
-                    image[i, j] = Pattern.index_to_color[index]
+        for index in np.ndindex(sample.shape):
+            pattern_index = sample[index]
+            if pattern_index == -1:
+                image[index] = [0.5, 0.5, 0.5]  # Grey
+            else:
+                image[index] = Pattern.index_to_color[pattern_index]
         return image
 
     @staticmethod

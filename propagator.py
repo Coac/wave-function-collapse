@@ -10,11 +10,12 @@ class Propagator:
         self.patterns = patterns
         self.offsets = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
 
+        self.precompute_legal_patterns()
+
+    def precompute_legal_patterns(self):
         for pattern in self.patterns:
             for offset in self.offsets:
                 self.legal_patterns(pattern, offset)
-
-        # TODO store a precomputed compatibility list
 
     def legal_patterns(self, pattern, offset):
         legal_patt = []

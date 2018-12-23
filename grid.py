@@ -12,7 +12,12 @@ class Grid:
 
     def __init__(self, size, num_pattern):
         self.size = size
-        self.grid = np.array([[Cell(num_pattern, (x, y), self) for x in range(self.size)] for y in range(self.size)])
+        self.grid = np.empty(self.size, dtype=object)
+        for position in np.ndindex(self.size):
+            self.grid[position] = Cell(num_pattern, position[::-1], self)
+
+        # self.grid = np.array([[Cell(num_pattern, (x, y), self) for x in range(self.size)] for y in range(self.size)])
+        # self.grid = np.array([Cell(num_pattern, (x,), self) for x in range(self.size)])
 
     def find_lowest_entropy(self):
         min_entropy = 999999
@@ -58,9 +63,5 @@ class Grid:
         return False
 
     def print_allowed_pattern_count(self):
-        to_print = ''
-        for y in range(self.size):
-            for x in range(self.size):
-                to_print += str(len(self.get_cell((x, y)).allowed_patterns)) + '\t'
-            to_print += '\n'
-        print(to_print)
+        grid_allowed_patterns = np.vectorize(lambda c: len(c.allowed_patterns))(self.grid)
+        print(grid_allowed_patterns)

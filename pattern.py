@@ -80,7 +80,10 @@ class Pattern:
         :param sample:
         :return: list of patterns
         """
-        plt.imshow(sample)
+        if len(sample.shape) < 3:
+            plt.imshow(np.expand_dims(sample, axis=0))
+        else:
+            plt.imshow(sample)
         plt.show()
 
         sample = Pattern.sample_img_to_indexes(sample)
@@ -103,8 +106,9 @@ class Pattern:
             pattern_location = [range(d, pattern_size[i] + d) for i, d in enumerate(index)]
             pattern_data = sample[np.ix_(*pattern_location)]
 
-            datas = [pattern_data, np.fliplr(pattern_data)]
+            datas = [pattern_data]
             if len(index) > 1:
+                datas.append(np.fliplr(pattern_data))
                 datas.append(np.flipud(pattern_data))
                 datas.append(np.rot90(pattern_data))
                 datas.append(np.rot90(pattern_data, 2))
@@ -175,7 +179,10 @@ class Pattern:
 
             image = Pattern.index_to_img(patterns[i - 1].data)
 
-            plt.imshow(image)
+            if len(image.shape) < 3:
+                plt.imshow(np.expand_dims(image, axis=0))
+            else:
+                plt.imshow(image)
 
         plt.show()
 

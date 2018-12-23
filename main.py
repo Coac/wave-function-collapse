@@ -5,8 +5,9 @@ from wfc import WaveFunctionCollapse
 
 if __name__ == '__main__':
 
-    grid_size = 30
+    grid_size = (30, 30)
     sample = plt.imread('samples/red_maze.png')
+    # sample = np.squeeze(sample)
     wfc = WaveFunctionCollapse(grid_size, sample)
 
     # wfc.run()

@@ -9,6 +9,7 @@ class Propagator:
     def __init__(self, patterns):
         self.patterns = patterns
         self.offsets = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
+        # self.offsets = [(x,) for x in range(-1, 2)]
 
         self.precompute_legal_patterns()
 

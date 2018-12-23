@@ -15,7 +15,9 @@ class Pattern:
         self.data = np.array(data)
         self.legal_patterns_index = {}  # offset -> [pattern_index]
 
-    def get(self, index):
+    def get(self, index=None):
+        if index is None:
+            return self.data.item(0)
         reversed_index = index[::-1]
         return self.data[reversed_index]
 

@@ -12,7 +12,7 @@ class Grid:
 
     def __init__(self, size, num_pattern):
         self.size = size
-        self.grid = [[Cell(num_pattern, (x, y), self) for x in range(self.size)] for y in range(self.size)]
+        self.grid = np.array([[Cell(num_pattern, (x, y), self) for x in range(self.size)] for y in range(self.size)])
 
     def find_lowest_entropy(self):
         min_entropy = 999999
@@ -35,8 +35,13 @@ class Grid:
         cell = lowest_entropy_cells[np.random.randint(len(lowest_entropy_cells))]
         return cell
 
-    def get_cell(self, x, y):
-        return self.grid[y][x]
+    def get_cell(self, index):
+        """
+        :param index: (x, y, z...)
+        :return: cell
+        """
+        reversed_index = index[::-1]
+        return self.grid[reversed_index]
 
     def get_image(self):
         image = []
@@ -61,6 +66,6 @@ class Grid:
         to_print = ''
         for y in range(self.size):
             for x in range(self.size):
-                to_print += str(len(self.get_cell(x, y).allowed_patterns)) + '\t'
+                to_print += str(len(self.get_cell((x, y)).allowed_patterns)) + '\t'
             to_print += '\n'
         print(to_print)

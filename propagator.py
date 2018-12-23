@@ -8,7 +8,6 @@ class Propagator:
 
     def __init__(self, patterns):
         self.patterns = patterns
-
         self.offsets = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
 
         for pattern in self.patterns:
@@ -22,12 +21,14 @@ class Propagator:
         for candidate_pattern in self.patterns:
             if pattern.is_compatible(candidate_pattern, offset):
                 legal_patt.append(candidate_pattern.index)
+        pattern.set_legal_patterns(offset, legal_patt)
 
         # Pattern.plot_patterns([Pattern.from_index(pat) for pat in legal_patt], offset)
 
         return legal_patt
 
-    def propagate(self, cell):
+    @staticmethod
+    def propagate(cell):
         to_update = [neighbour for neighbour, _ in cell.get_neighbors()]
         while len(to_update) > 0:
             cell = to_update.pop(0)

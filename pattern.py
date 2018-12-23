@@ -13,10 +13,14 @@ class Pattern:
     def __init__(self, data, index):
         self.index = index
         self.data = np.array(data)
+        self.legal_patterns_index = {}  # offset -> [pattern_index]
 
     def get(self, index):
         reversed_index = index[::-1]
         return self.data[reversed_index]
+
+    def set_legal_patterns(self, offset, legal_patterns):
+        self.legal_patterns_index[offset] = legal_patterns
 
     @property
     def shape(self):
@@ -31,6 +35,11 @@ class Pattern:
         """
         assert (self.shape == candidate_pattern.shape)
 
+        # Precomputed compatibility
+        if offset in self.legal_patterns_index:
+            return candidate_pattern.index in self.legal_patterns_index[offset]
+
+        # Computing compatibility
         ok_constraint = True
         start = tuple(max(offset[i], 0) for i, _ in enumerate(offset))
         end = tuple(min(self.shape[i] + offset[i], self.shape[i]) for i, _ in enumerate(offset))

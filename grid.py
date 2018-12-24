@@ -14,7 +14,7 @@ class Grid:
         self.size = size
         self.grid = np.empty(self.size, dtype=object)
         for position in np.ndindex(self.size):
-            self.grid[position] = Cell(num_pattern, position[::-1], self)
+            self.grid[position] = Cell(num_pattern, position, self)
 
         # self.grid = np.array([[Cell(num_pattern, (x, y), self) for x in range(self.size)] for y in range(self.size)])
         # self.grid = np.array([Cell(num_pattern, (x,), self) for x in range(self.size)])
@@ -41,11 +41,10 @@ class Grid:
 
     def get_cell(self, index):
         """
-        :param index: (x, y, z...)
+        :param index: (...z, y, x)
         :return: cell
         """
-        reversed_index = index[::-1]
-        return self.grid[reversed_index]
+        return self.grid[index]
 
     def get_image(self):
         image = np.vectorize(lambda c: c.get_value())(self.grid)

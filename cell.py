@@ -14,8 +14,7 @@ class Cell:
 
         self.position = position
         self.grid = grid
-        self.offsets = [(x, y) for x in range(-1, 2) for y in range(-1, 2)]
-        # self.offsets = [(x,) for x in range(-1, 2)]
+        self.offsets = [(y, x) for x in range(-1, 2) for y in range(-1, 2)]
 
     def entropy(self):
         return len(self.allowed_patterns)

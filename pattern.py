@@ -18,8 +18,7 @@ class Pattern:
     def get(self, index=None):
         if index is None:
             return self.data.item(0)
-        reversed_index = index[::-1]
-        return self.data[reversed_index]
+        return self.data[index]
 
     def set_legal_patterns(self, offset, legal_patterns):
         self.legal_patterns_index[offset] = legal_patterns
@@ -74,9 +73,10 @@ class Pattern:
         return ok_constraint
 
     @staticmethod
-    def from_sample(sample):
+    def from_sample(sample, pattern_size):
         """
         Compute patterns from sample
+        :param pattern_size:
         :param sample:
         :return: list of patterns
         """
@@ -90,7 +90,6 @@ class Pattern:
 
         shape = sample.shape
         patterns = []
-        pattern_size = (2, 2)
         pattern_index = 0
 
         for index, _ in np.ndenumerate(sample):
@@ -107,7 +106,7 @@ class Pattern:
             pattern_data = sample[np.ix_(*pattern_location)]
 
             datas = [pattern_data]
-            if len(index) > 1:
+            if shape[0] > 1:
                 datas.append(np.fliplr(pattern_data))
                 datas.append(np.flipud(pattern_data))
                 datas.append(np.rot90(pattern_data))

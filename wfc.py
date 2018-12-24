@@ -13,8 +13,8 @@ class WaveFunctionCollapse:
     WaveFunctionCollapse encapsulates the wfc algorithm
     """
 
-    def __init__(self, grid_size, sample):
-        self.patterns = Pattern.from_sample(sample)
+    def __init__(self, grid_size, sample, pattern_size):
+        self.patterns = Pattern.from_sample(sample, pattern_size)
         self.grid = self._create_grid(grid_size)
         self.propagator = Propagator(self.patterns)
 

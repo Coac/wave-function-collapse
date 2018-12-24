@@ -49,6 +49,7 @@ class Grid:
     def get_image(self):
         image = np.vectorize(lambda c: c.get_value())(self.grid)
         image = Pattern.index_to_img(image)
+        image = np.squeeze(image, axis=0)
         return image
 
     def show(self):

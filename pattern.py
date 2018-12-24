@@ -82,6 +82,8 @@ class Pattern:
         """
         if len(sample.shape) < 3:
             plt.imshow(np.expand_dims(sample, axis=0))
+        elif len(sample.shape) > 3:
+            plt.imshow(np.squeeze(sample, axis=0))
         else:
             plt.imshow(sample)
         plt.show()
@@ -105,12 +107,12 @@ class Pattern:
             pattern_location = [range(d, pattern_size[i] + d) for i, d in enumerate(index)]
             pattern_data = sample[np.ix_(*pattern_location)]
 
-            datas = [pattern_data]
-            if shape[0] > 1:
-                datas.append(np.fliplr(pattern_data))
+            datas = [pattern_data, np.fliplr(pattern_data)]
+            if shape[1] > 1:  # is 2D
                 datas.append(np.flipud(pattern_data))
-                datas.append(np.rot90(pattern_data))
-                datas.append(np.rot90(pattern_data, 2))
+                datas.append(np.rot90(pattern_data, axes=(1, 2)))
+                datas.append(np.rot90(pattern_data, 2, axes=(1, 2)))
+                datas.append(np.rot90(pattern_data, 3, axes=(1, 2)))
 
             # Checking existence
             # TODO: more probability to multiple occurrences when observe phase
@@ -180,6 +182,8 @@ class Pattern:
 
             if len(image.shape) < 3:
                 plt.imshow(np.expand_dims(image, axis=0))
+            elif len(image.shape) > 3:
+                plt.imshow(np.squeeze(image, axis=0))
             else:
                 plt.imshow(image)
 

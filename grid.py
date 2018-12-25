@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 
 from cell import Cell
@@ -47,14 +46,13 @@ class Grid:
         return self.grid[index]
 
     def get_image(self):
+        """
+        Returns the grid converted from index to back to color
+        :return:
+        """
         image = np.vectorize(lambda c: c.get_value())(self.grid)
         image = Pattern.index_to_img(image)
-        image = np.squeeze(image, axis=0)
         return image
-
-    def show(self):
-        plt.imshow(self.get_image())
-        plt.show()
 
     def check_contradiction(self):
         for cell in self.grid.flat:

@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from display import show
+
 
 class Pattern:
     """
@@ -80,12 +82,8 @@ class Pattern:
         :param sample:
         :return: list of patterns
         """
-        if len(sample.shape) < 3:
-            plt.imshow(np.expand_dims(sample, axis=0))
-        elif len(sample.shape) > 3:
-            plt.imshow(np.squeeze(sample, axis=0))
-        else:
-            plt.imshow(sample)
+
+        show(sample)
         plt.show()
 
         sample = Pattern.sample_img_to_indexes(sample)
@@ -180,12 +178,7 @@ class Pattern:
 
             image = Pattern.index_to_img(patterns[i - 1].data)
 
-            if len(image.shape) < 3:
-                plt.imshow(np.expand_dims(image, axis=0))
-            elif len(image.shape) > 3:
-                plt.imshow(np.squeeze(image, axis=0))
-            else:
-                plt.imshow(image)
+            show(image)
 
         plt.show()
 

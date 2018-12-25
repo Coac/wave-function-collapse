@@ -23,8 +23,6 @@ class WaveFunctionCollapse:
         while not done:
             done = self.step()
 
-        self.output_observations()
-
     def step(self):
         self.grid.print_allowed_pattern_count()
         cell = self.observe()
@@ -50,9 +48,6 @@ class WaveFunctionCollapse:
 
     def propagate(self, cell):
         self.propagator.propagate(cell)
-
-    def output_observations(self):
-        self.grid.show()
 
     def _create_grid(self, grid_size):
         num_pattern = len(self.patterns)

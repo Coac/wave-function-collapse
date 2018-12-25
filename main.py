@@ -22,6 +22,7 @@ if __name__ == '__main__':
     fig = plt.figure()
 
     image = wfc.get_image()
+    image = np.squeeze(image, axis=0)
     im = plt.imshow(image)
 
 
@@ -29,7 +30,9 @@ if __name__ == '__main__':
         done = wfc.step()
         if done:
             return im,
-        im.set_array(wfc.get_image())
+        image = wfc.get_image()
+        image = np.squeeze(image, axis=0)
+        im.set_array(image)
         return im,
 
 

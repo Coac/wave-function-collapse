@@ -156,11 +156,13 @@ class Pattern:
 
     @staticmethod
     def index_to_img(sample):
-        image = np.zeros(sample.shape + (3,))
+        color = next(iter(Pattern.index_to_color.values()))
+
+        image = np.zeros(sample.shape + (len(color),))
         for index in np.ndindex(sample.shape):
             pattern_index = sample[index]
             if pattern_index == -1:
-                image[index] = [0.5, 0.5, 0.5]  # Grey
+                image[index] = [0.5 for _ in range(len(color))]  # Grey
             else:
                 image[index] = Pattern.index_to_color[pattern_index]
         return image

@@ -1,7 +1,7 @@
-import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
 
+from display import load_sample
 from wfc import WaveFunctionCollapse
 
 if __name__ == '__main__':
@@ -9,32 +9,24 @@ if __name__ == '__main__':
     grid_size = (1, 30, 30)
     pattern_size = (1, 2, 2)
 
-    sample = plt.imread('samples/red_maze.png')
-
-    # Expand dim to 3D
-    sample = np.expand_dims(sample, axis=0)
-    sample = sample[:, :, :, :3]
-
+    sample = load_sample('samples/red_maze.png')
     wfc = WaveFunctionCollapse(grid_size, sample, pattern_size)
 
     # wfc.run()
 
-    fig = plt.figure()
-
+    fig, ax = plt.subplots()
     image = wfc.get_image()
     image = np.squeeze(image, axis=0)
     im = plt.imshow(image)
-
-
-    def update_fig(*args):
+    while True:
         done = wfc.step()
         if done:
-            return im,
+            break
         image = wfc.get_image()
         image = np.squeeze(image, axis=0)
+
         im.set_array(image)
-        return im,
+        fig.canvas.draw()
+        plt.pause(0.001)
 
-
-    ani = animation.FuncAnimation(fig, update_fig, interval=1, blit=True)
     plt.show()

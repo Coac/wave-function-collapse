@@ -23,7 +23,9 @@ def export_voxel(path, image):
 
 
 if __name__ == '__main__':
-    grid_size = (10, 10, 10)
+    np.random.seed(42)
+
+    grid_size = (6, 6, 6)
     pattern_size = (2, 2, 2)
 
     sample = load_voxel_sample('../samples/test.vox')

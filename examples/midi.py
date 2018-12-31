@@ -13,7 +13,7 @@ def load_midi_sample(path):
     for msg in midi_file:
         time += msg.time
         if not msg.is_meta:
-            if msg.channel == 0 or True:
+            if msg.channel == 0:
                 if msg.type == 'note_on':
                     note = msg.bytes()
                     note.append(time - prev_time)

@@ -44,8 +44,8 @@ class Pattern:
 
         # Computing compatibility
         ok_constraint = True
-        start = tuple(max(offset[i], 0) for i, _ in enumerate(offset))
-        end = tuple(min(self.shape[i] + offset[i], self.shape[i]) for i, _ in enumerate(offset))
+        start = tuple([max(offset[i], 0) for i, _ in enumerate(offset)])
+        end = tuple([min(self.shape[i] + offset[i], self.shape[i]) for i, _ in enumerate(offset)])
         for index in np.ndindex(end):  # index = (x, y, z...)
             start_constraint = True
             for i, d in enumerate(index):

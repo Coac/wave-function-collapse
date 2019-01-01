@@ -83,9 +83,6 @@ class Pattern:
         :return: list of patterns
         """
 
-        show(sample)
-        plt.show()
-
         sample = Pattern.sample_img_to_indexes(sample)
 
         shape = sample.shape
@@ -128,7 +125,7 @@ class Pattern:
                 Pattern.index_to_pattern[pattern_index] = pattern
                 pattern_index += 1
 
-        Pattern.plot_patterns(patterns)
+        # Pattern.plot_patterns(patterns)
         return patterns
 
     @staticmethod

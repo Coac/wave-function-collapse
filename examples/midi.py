@@ -29,7 +29,7 @@ def load_midi_sample(path):
                     notes.append(note)
 
     notes = np.array(notes)
-    notes = notes[0:100]
+    # notes = notes[0:200]
 
     notes = np.expand_dims(notes, axis=0)
     notes = np.expand_dims(notes, axis=0)

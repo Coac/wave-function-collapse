@@ -40,6 +40,9 @@ class WaveFunctionCollapse:
     def get_image(self):
         return self.grid.get_image()
 
+    def get_patterns(self):
+        return [pattern.to_image() for pattern in self.patterns]
+
     def observe(self):
         if self.grid.check_contradiction():
             return None

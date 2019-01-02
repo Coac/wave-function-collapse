@@ -1,7 +1,4 @@
-import matplotlib.pyplot as plt
 import numpy as np
-
-from display import show
 
 
 class Pattern:
@@ -74,6 +71,9 @@ class Pattern:
 
         return ok_constraint
 
+    def to_image(self):
+        return Pattern.index_to_img(self.data)
+
     @staticmethod
     def from_sample(sample, pattern_size):
         """
@@ -108,6 +108,12 @@ class Pattern:
                 datas.append(np.rot90(pattern_data, axes=(1, 2)))
                 datas.append(np.rot90(pattern_data, 2, axes=(1, 2)))
                 datas.append(np.rot90(pattern_data, 3, axes=(1, 2)))
+
+            if shape[0] > 1:  # is 3D
+                datas.append(np.flipud(pattern_data))
+                datas.append(np.rot90(pattern_data, axes=(0, 2)))
+                datas.append(np.rot90(pattern_data, 2, axes=(0, 2)))
+                datas.append(np.rot90(pattern_data, 3, axes=(0, 2)))
 
             # Checking existence
             # TODO: more probability to multiple occurrences when observe phase
@@ -163,23 +169,6 @@ class Pattern:
             else:
                 image[index] = Pattern.index_to_color[pattern_index]
         return image
-
-    @staticmethod
-    def plot_patterns(patterns, title=''):
-        fig = plt.figure(figsize=(8, 8))
-        fig.suptitle(title, fontsize=16)
-        columns = 4
-        rows = 5
-        for i in range(1, columns * rows + 1):
-            if i > len(patterns):
-                break
-            fig.add_subplot(rows, columns, i)
-
-            image = Pattern.index_to_img(patterns[i - 1].data)
-
-            show(image)
-
-        plt.show()
 
     @staticmethod
     def from_index(pattern_index):

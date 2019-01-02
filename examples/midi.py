@@ -85,8 +85,6 @@ if __name__ == '__main__':
 
     sample, ticks_per_beat = load_midi_sample('../samples/Mario-Sheet-Music-Overworld-Main-Theme_RH.mid')
 
-    export_midi(sample, '../samples/output.mid', ticks_per_beat)
-
     print('sample shape:', sample.shape)
 
     wfc = WaveFunctionCollapse(grid_size, sample, pattern_size)

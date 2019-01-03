@@ -1,3 +1,8 @@
+"""
+An example of using the wave function collapse with 2D image.
+
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 

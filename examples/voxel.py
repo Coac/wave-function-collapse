@@ -1,3 +1,9 @@
+"""
+An example of using the wave function collapse with 3D voxel file.
+It loads a magica voxel file using py-vox-io
+You should install py-vox-io using `pip install py-vox-io`
+"""
+
 import numpy as np
 from pyvox.models import Vox
 from pyvox.parser import VoxParser

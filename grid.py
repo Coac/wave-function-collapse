@@ -40,6 +40,7 @@ class Grid:
 
     def get_cell(self, index):
         """
+        Returns the cell contained in the grid at the provided index
         :param index: (...z, y, x)
         :return: cell
         """

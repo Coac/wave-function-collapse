@@ -40,7 +40,6 @@ class Propagator:
                 legal_patt.append(candidate_pattern.index)
         pattern.set_legal_patterns(offset, legal_patt)
 
-        # Pattern.plot_patterns([Pattern.from_index(pat) for pat in legal_patt], offset)
         return pattern.index, offset, legal_patt
 
     @staticmethod

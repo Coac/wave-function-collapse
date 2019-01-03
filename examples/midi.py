@@ -1,3 +1,9 @@
+"""
+An example of using the wave function collapse with midi file.
+It uses the mido library to load and export midi files
+You should install mido using `pip install mido`
+"""
+
 import numpy as np
 from mido import MidiFile, MidiTrack, Message, second2tick, MetaMessage
 from mido.midifiles.midifiles import DEFAULT_TEMPO

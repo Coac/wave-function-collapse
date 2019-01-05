@@ -56,19 +56,6 @@ class Pattern:
                 ok_constraint = False
                 break
 
-        # Old code, only for 2D
-        # start_x = max(offset[0], 0)
-        # start_y = max(offset[1], 0)
-        #
-        # end_x = min(self.shape[0] + offset[0], self.shape[0])
-        # end_y = min(self.shape[1] + offset[1], self.shape[1])
-        # ok_constraint = True
-        # for x in range(start_x, end_x):
-        #     for y in range(start_y, end_y):
-        #         if candidate_pattern.get((x - offset[0], y - offset[1])) != self.get((x, y)):
-        #             ok_constraint = False
-        #             break
-
         return ok_constraint
 
     def to_image(self):

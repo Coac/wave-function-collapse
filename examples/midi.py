@@ -20,7 +20,6 @@ def load_midi_sample(path):
     prev_time = 0.0
     for msg in midi_file:
         time += msg.time
-        # print(msg)
         if msg.is_meta:
             if msg.type == 'set_tempo':
                 global TEMPO
@@ -35,30 +34,9 @@ def load_midi_sample(path):
                     notes.append(note)
 
     notes = np.array(notes)
-    # notes = notes[0:200]
 
     notes = np.expand_dims(notes, axis=0)
     notes = np.expand_dims(notes, axis=0)
-
-    # notes = []
-    # for msg in merge_tracks(midi_file.tracks):
-    #     time += msg.time
-    #     # print(msg)
-    #     if msg.is_meta:
-    #         if msg.type == 'set_tempo':
-    #             TEMPO = msg.tempo
-    #             print(TEMPO)
-    #     else:
-    #         if msg.channel == 0:
-    #             # TODO note_off
-    #             if msg.type == 'note_on':
-    #                 note = msg.bytes()
-    #                 note.append(msg.time)
-    #                 notes.append(note)
-    # notes = np.expand_dims(notes, axis=0)
-    # notes = np.expand_dims(notes, axis=0)
-
-    print(midi_file)
 
     return notes, midi_file.ticks_per_beat
 
@@ -89,7 +67,7 @@ if __name__ == '__main__':
     grid_size = (1, 1, 200)
     pattern_size = (1, 1, 2)
 
-    sample, ticks_per_beat = load_midi_sample('../samples/Mario-Sheet-Music-Overworld-Main-Theme_RH.mid')
+    sample, ticks_per_beat = load_midi_sample('../samples/twinkle_twinkle.mid')
 
     print('sample shape:', sample.shape)
 

@@ -64,7 +64,7 @@ def export_midi(notes, path, ticks_per_beat):
 if __name__ == '__main__':
     np.random.seed(42)
 
-    grid_size = (1, 1, 200)
+    grid_size = (1, 1, 100)
     pattern_size = (1, 1, 2)
 
     sample, ticks_per_beat = load_midi_sample('../samples/twinkle_twinkle.mid')

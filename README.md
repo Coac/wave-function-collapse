@@ -21,4 +21,5 @@ See `examples/midi.py`
 
 ### Voxel
 See `examples/voxel.py`
+
 ![wfc_example](./docs/wfc_voxel.gif)
